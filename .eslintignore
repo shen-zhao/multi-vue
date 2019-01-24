@@ -1,0 +1,7 @@
+/scripts/
+/config/
+/dist/
+/*.js
+/dev
+/src/mock/js
+/src/js/lib
