@@ -1,7 +1,8 @@
 <template>
     <div>
-        <van-button @click="trigger" type="primary">{{index}}</van-button>
+        <van-button @click="trigger" type="primary">{{index}}秒<i class="iconfont icon-tag"></i></van-button>
         <switch-wrap v-if="show"></switch-wrap>
+        <div class="test"></div>
     </div>
 </template>
 
@@ -12,7 +13,7 @@ const SwitchWrap = () => import('@/js/components/switch');
 export default {
     data() {
         return {
-            index: 0,
+            index: 1,
             timer: null,
             show: false
         };

@@ -1,5 +1,6 @@
 require('./check-versions');
 
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const utils = require('./utils');
 const config = require('../config');
@@ -8,8 +9,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 //图片压缩
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
-// //压缩js
-const uglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 const prodWebpackConfig = merge(webpackConfig, {
     mode: 'production',
@@ -20,10 +19,14 @@ const prodWebpackConfig = merge(webpackConfig, {
         publicPath: utils.publicPath('production')
     },
     plugins: [
+        new webpack.HashedModuleIdsPlugin(),
         new OptimizeCSSPlugin({
             cssProcessorOptions: {
                 safe: true
             }
+        }),
+        new MiniCssExtractPlugin({
+            filename: utils.assetsPath('styles/[name].[hash:8].css')
         }),
         new ImageminPlugin({
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -35,33 +38,17 @@ const prodWebpackConfig = merge(webpackConfig, {
     ],
     optimization: {
         minimize: true, //pro模式默认值
-        minimizer: [
-            new uglifyjsWebpackPlugin({
-                test: /\.js($|\?)/i,
-                parallel: true,
-                cache: true,
-                uglifyOptions: {
-                    // ie8: true,
-                    compress: {
-                        drop_console: true
-                    }
-                }
-            }),
-            new MiniCssExtractPlugin({
-                filename: utils.assetsPath('styles/[name].[hash:8].css')
-            }),
-        ],
         flagIncludedChunks: true, //pro模式默认值
         occurrenceOrder: true, //pro模式默认值
         providedExports: true, //默认值
         usedExports: true, //pro模式默认值
         sideEffects: true, //pro模式默认值
         noEmitOnErrors: true, //pro模式默认值
-        concatenateModules: true, //pro模式默认值  消除代码副作用并优化模块大小
+        concatenateModules: true, //pro模式默认值 
         splitChunks: {
             minSize: 30000,
             name: false,
-            chunks: 'async', //除了缓存组，只有异步组件才分块(可能会没有异步组件)，目的是除了缓存组之外其他js引用全部打入入口文件(因为html js注入是固定的，详见uitls.dealPageConf)
+            chunks: 'async', //除了缓存组，只有异步组件才分块(可能会没有异步组件)，目的是除了缓存组之外其他js引用全部打入入口文件(因为html js注入是固定的，详见uitls.initEntryAndHtmlPlugin)
             cacheGroups: {
                 vendors: {
                     test: /[\\/]{1,2}node_modules[\\/]{1,2}(?!echarts)/,

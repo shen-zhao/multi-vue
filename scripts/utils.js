@@ -25,23 +25,35 @@ function fsExistsTest(baseUrl, realPath) { //检测脚本是否存在，不存�
 
 //递归创建目录，返回filename
 function mkdir(pathChip, baseUrl) {
+    let isExists;
     const currentChip = pathChip.shift();
     if (/\.js$/.test(currentChip)) {
         return path.join(baseUrl, currentChip);
     }
     const dirname = path.join(baseUrl, currentChip);
-    const isExists = fs.existsSync(dirname);
+    
+    try {
+        isExists = fs.existsSync(dirname);
+    } catch (err) {
+        throw err;
+    }
+
     if (isExists) {
         return mkdir(pathChip, dirname);
     }
 
-    fs.mkdirSync(dirname);
+    try {
+        fs.mkdirSync(dirname);
+    } catch (err) {
+        throw err;
+    }
+
     return mkdir(pathChip, dirname);
 }
 
 exports.publicPath = (env) => {
     if (env === 'development') {
-        return `//localhost:${serverConfig.port}/`;
+        return '../';
     }
     return process.argv[2] || config.build.publicPath;
 }
@@ -61,9 +73,9 @@ exports.initEntryAndHtmlPlugin = () => {
         baseUrl = buildConfig.baseUrl;
 
     //公共样式entry
-    entryMap['stylesheet'] = './src/js/common/stylesheet.js';
+    entryMap['stylesheet'] = ['./src/js/common/stylesheet.js'];
     //全局脚本
-    entryMap['globalScript'] = './src/js/common/globalScript.js';
+    entryMap['globalScript'] = ['./src/js/common/globalScript.js'];
 
     pages.forEach((obj, i) => {
         //entry

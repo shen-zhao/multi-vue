@@ -12,7 +12,7 @@ const target = env === 'production' ? 'dist' : 'dev';
 
 const baseConfig = {
     context: path.resolve(__dirname, '../'),
-    entry: {},
+    entry: pageConf.entryMap,
     output: {
         path: env === 'production' ? config.build.assetsRoot : config.dev.assetsRoot,
         filename: utils.assetsPath(env === 'production' ? 'js/[name].[chunkhash:8].js' : 'js/[name].js')
@@ -132,7 +132,5 @@ const baseConfig = {
         new VueLoaderPlugin()
     ]
 }
-//多页面js入口
-baseConfig.entry = pageConf.entryMap;
 
 module.exports = baseConfig;

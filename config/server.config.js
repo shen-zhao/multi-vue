@@ -2,7 +2,8 @@ module.exports = {
     vm: [
         '.html'
     ],
-    port: 9999,
+    port: 9000,
+    host: '0.0.0.0',
     proxyTable: {
         '/proxy': {
             // 我要请求的地址

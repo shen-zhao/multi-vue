@@ -111,7 +111,7 @@ ${ require('../inc/index.html') }
 
 ## 语法
 
-1.支持`ES2015`、`ES2016`和`ES2017`等, 以及`stage-2`阶段的最新, 最后统一编译成浏览器兼容语法
+1.支持`ES2015`、`ES2016`和`ES2017`等, 以及`stage-2`阶段的语法, 最后统一编译成ES5语法
 
 2.html(包括/pages、/inc)中支持使用`velocity`语法(需`velocity服务器`支持, 不支持`#parse`)
 
@@ -123,7 +123,7 @@ js、vue文件
 - @代表/src, 例如引入index.js, `import index from '@/js/index'`, 更多别名可在scripts/webpack.base.conf.js中配置
 
 vue文件
-- 根据.vue编写规则进行比那些
+- 根据.vue规则进行coding
 
 html文件
 - 使用`${require(<!path>)}`

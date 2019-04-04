@@ -8,7 +8,7 @@ const Velocity = require('velocityjs');
 const webpack = require('webpack');
 const serveIndex = require('serve-index')
 const JSON5 = require('json5');
-const opn = require('opn')
+const open = require('open')
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const proxyMiddleware = require('http-proxy-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -17,7 +17,7 @@ const devConfig = require('./webpack.dev.conf');
 const utils = require('./utils');
 const config = require('../config');
 //真实接口与mock对应表
-const apiMap = require('../src/js/server/api');
+const apiMap = require('../src/js/service/api');
 
 const compiler = webpack(devConfig);
 
@@ -168,26 +168,12 @@ const devMiddleware = webpackDevMiddleware(compiler, {
     logLevel: 'silent'
 })
 // webpack hot-reload middleware(热刷新)
-const hotMiddleware = webpackHotMiddleware(compiler, {
-    noInfo: true,
-    quiet: true,
-    overlay: false,
-    overlayWarnings: false
-})
-
-compiler.plugin('compilation', function (compilation) {
-    compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-        hotMiddleware.publish({
-            action: 'reload'
-        });
-        typeof cb == 'function' && cb();
-    })
-})
+const hotMiddleware = webpackHotMiddleware(compiler)
 
 let isFirst = true;
 compiler.plugin('done', function () {
     if (autoOpen && isFirst) {
-        opn(`http://localhost:${port}`);
+        open(`http://localhost:${port}`);
         isFirst = false;
     }
 });
@@ -196,10 +182,6 @@ compiler.plugin('done', function () {
 app.use(devMiddleware);
 
 app.use(hotMiddleware);
-
-// devMiddleware.waitUntilValid(() => {
-//     console.log(`> Listening at http://localhost:${port}\n`);
-// });
 
 module.exports = app.listen(port, (err) => {
     if (err) {
