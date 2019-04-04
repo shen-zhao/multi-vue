@@ -75,7 +75,7 @@ Projet
 ├──build.js  bundle config
 ```
 
-# [Document](https://github.com/shen-zhao/coldplay/tree/master/doc)
+# [Document](https://github.com/shen-zhao/multi-vue/tree/master/doc)
 
 # 参考资料
 
