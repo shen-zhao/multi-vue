@@ -51,16 +51,23 @@ const prodWebpackConfig = merge(webpackConfig, {
             chunks: 'async', //除了缓存组，只有异步组件才分块(可能会没有异步组件)，目的是除了缓存组之外其他js引用全部打入入口文件(因为html js注入是固定的，详见uitls.initEntryAndHtmlPlugin)
             cacheGroups: {
                 vendors: {
-                    test: /[\\/]{1,2}node_modules[\\/]{1,2}(?!echarts)/,
+                    test: /[\\/]{1,2}node_modules[\\/]{1,2}/,
                     name: 'vendors',
                     chunks: 'all',
                     enforce: true
                 },
-                echarts: {
-                    test: /[\\/]{1,2}node_modules[\\/]{1,2}echarts/,
-                    name: 'echarts',
-                    chunks: 'all'
-                }
+                //对于较大且低频的库可以单独打包，例如下面的echart，在vendors中排出并单独进行打包，并且需要修改注入逻辑，需要单独注入(见./utils下的initEntryAndHtmlPlugin方法)
+                // vendors: {
+                //     test: /[\\/]{1,2}node_modules[\\/]{1,2}(?!echarts)/,
+                //     name: 'vendors',
+                //     chunks: 'all',
+                //     enforce: true
+                // },
+                // echarts: {
+                //     test: /[\\/]{1,2}node_modules[\\/]{1,2}echarts/,
+                //     name: 'echarts',
+                //     chunks: 'all'
+                // }
             }
         },
         runtimeChunk: {

@@ -97,7 +97,7 @@ exports.initEntryAndHtmlPlugin = () => {
         obj.stylesheet !== false && pluginConf.chunks.push('stylesheet');
         obj.globalScript !== false && pluginConf.chunks.push('globalScript')
         obj.vendors !== false && pluginConf.chunks.push('vendors');
-        obj.echarts && (pluginConf.chunks.push('echarts'));
+        // obj.echarts && (pluginConf.chunks.push('echarts'));
         pluginConf.chunks.push(obj.template);
 
         htmlPlugins.push(

@@ -65,7 +65,7 @@ function compile(vmPath, callback) {
         err.status = 404;
         return callback(err);
     }
-    vmFile.contents = new Buffer(template);
+    vmFile.contents = Buffer.from(template);
     let context;
     try {
         delete require.cache[require.resolve(contextFile.path)];
